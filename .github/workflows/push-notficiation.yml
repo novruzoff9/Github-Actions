@@ -14,5 +14,5 @@ jobs:
             password: ${{ secrets.PASSWORD }}  # fqan xzyv byzq gson
             subject: 'Push Notification'      
             body: 'Push Notification'
-            to: ${{ vilayat.aliyev@code.edu.az  }}       
+            to: vilayat.aliyev@code.edu.az      
             from: ${{ secrets.EMAIL_FROM }} 
