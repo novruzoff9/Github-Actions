@@ -1,0 +1,142 @@
+name: Push Notification
+
+on:
+  push:
+    branches:
+      - main 
+      - 'dev*'
+      - 'test*'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notification email for PR
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL }}
+          password: ${{ secrets.PASSWORD }}
+          to: ${{ vilayat.aliyev@code.edu.az }}
+          from: ${{ secrets.EMAIL_FROM }}
+          subject: 'Push Notification for PR - ${{ github.event_name }}' 
+          html_body: |  
+            <html lang="en"> 
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Document</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                    } 
+                    .container {
+                        border-radius: 10px;
+                        border: 1px solid #dee2e6;
+                        padding: 10px;
+                        width: calc(50%);
+                        max-width: 100%;
+                    } 
+                    .table {
+                        width: 100%;
+                        margin-bottom: 1rem;
+                        background-color: transparent;
+                        border-collapse: collapse; 
+                    } 
+                    .table th,
+                    .table td {
+                        padding: 0.75rem;
+                        vertical-align: top;
+                        border-top: 1px solid #dee2e6;
+                    }
+            
+                    .table thead th {
+                        vertical-align: bottom;
+                        border-bottom: 2px solid #dee2e6;
+                    }
+            
+                    .table tbody+tbody {
+                        border-top: 2px solid #dee2e6;
+                    }
+            
+                    .table .table {
+                        background-color: #f8f9fa;
+                    }
+            
+                    .table-striped tbody tr:nth-of-type(odd) {
+                        background-color: rgba(0, 0, 0, 0.05);
+                    }
+                </style>
+            </head>
+            
+            <body>
+                <div class="container">
+                    <table class="table table-striped">
+                        <caption>${{ github.event_name }} event triggered for PR</caption>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Repository:</td>
+                                <td>${{ github.repository }}</td>
+                            </tr>
+                            <tr>
+                                <td>Branch:</td>
+                                <td>${{ github.ref }}</td>
+                            </tr>
+                            <tr>
+                                <td>Event:</td>
+                                <td>${{ github.event_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Action:</td>
+                                <td>${{ github.action }}</td>
+                            </tr>
+                            <tr>
+                                <td>Actor:</td>
+                                <td>${{ github.actor }}</td>
+                            </tr>
+                            <tr>
+                                <td>Workflow:</td>
+                                <td>${{ github.workflow }}</td>
+                            </tr>
+                            <tr>
+                                <td>Run ID:</td>
+                                <td>${{ github.run_id }}</td>
+                            </tr>
+                            <tr>
+                                <td>Run Number:</td>
+                                <td>${{ github.run_number }}</td>
+                            </tr>
+                            <tr>
+                                <td>Event Name:</td>
+                                <td>${{ github.event_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Event Path:</td>
+                                <td>${{ github.event_path }}</td>
+                            </tr>
+                            <tr>
+                                <td>Event Inputs:</td>
+                                <td>${{ github.event.inputs }}</td>
+                            </tr>
+                            <tr>
+                                <td>Event Outputs:</td>
+                                <td>${{ github.event.outputs }}</td>
+                            </tr>
+                            <tr>
+                                <td>Event Payload:</td>
+                                <td>${{ github.event.payload }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </body>
+            </html>
